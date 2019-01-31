@@ -1,0 +1,6 @@
+typedef struct s_block *t_block;
+3 struct s_block {
+4 size_t size;
+5 t_block next;
+6 int free;
+7 };

@@ -1,0 +1,18 @@
+/*
+ ** ETNA PROJECT, 31 janv. 2019
+ ** malloc_header
+ ** File description
+ */
+
+#ifndef MALLOC_HEADER_H_
+#define MALLOC_HEADER_H_
+
+typedef struct s_block *t_block;
+
+struct s_block {
+	size_t size; // the size of the data
+	t_block next; // the next block
+	int free; // a flag to know if the current block is free or not
+};
+
+#endif /* MALLOC_HEADER_H_ */

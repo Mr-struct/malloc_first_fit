@@ -1,0 +1,195 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.cours.main;
+
+import com.cours.calcul.Calculation;
+import com.cours.calcul.ICalculation;
+import com.cours.process.IProcessAnimal;
+
+import java.util.Scanner;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+/**
+ *
+ * @author elhad
+ */
+public class Main {
+
+	private static final Log log = LogFactory.getLog(Main.class);
+	private static ICalculation calculation = null;
+	private static IProcessAnimal processAnimal = null;
+
+	/**
+	 * @param args the command line arguments
+	 */
+	public static void main(String[] args) {
+
+		calculation = new Calculation();
+		//testVerifyParite();
+		//testCompareChaines();
+		testFactorielItterative();
+		//testFactorielRecursive();
+        //testNombreMagique();
+        //testSortMyArray();
+        //testProcessAnimal();54
+        
+
+	}
+
+	public static void testVerifyParite() {
+
+		Scanner input = new Scanner(System.in);
+		String  stringNumber = "";
+		System.out.print("Entrez un nombre entier : ");
+		while(!input.hasNextInt()) {
+
+			System.out.println("[" + input.next() +  "]" + " n'est pas un entier!");
+			System.out.print("Veuillez entrez un nombre entier : ");
+			input.reset(); 		
+		}
+
+		stringNumber = input.next();
+		int  calcule = calculation.verifyParite(stringNumber);
+
+		switch (calcule) {
+
+		case 0:
+
+			System.out.println("Le nombre est neutre ( 0 )");
+			break;
+
+		case 1 :
+
+			System.out.println("Le nombre est paire et positif");
+			break;
+
+		case 2:
+
+			System.out.println("Le nombre est paire et négatif");
+			break;
+
+		case 3:
+
+			System.out.println("Le nombre est impaire et positif");
+			break;
+
+		case 4 :
+
+			System.out.println("Le nombre est impaire et négatif");
+			break;
+
+		default :
+
+			System.out.println("le champ entré n'est pas un entier !");
+			break;
+		}
+
+	}
+
+	public static void testCompareChaines() {
+
+		Scanner input = new Scanner(System.in);
+		System.out.print("Entrez une premiere chaine de caractères : ");
+		String  firstChaine = input.next();
+
+		System.out.print("Entrez une seconde chaine de caractères : ");
+		String  secondeChaine = input.next();
+		
+		int  calcule = calculation.compareChaines(firstChaine, secondeChaine);
+
+		switch (calcule) {
+
+		case 0:
+			System.out.println("Les deux chaînes sont identiques");
+			break;
+
+		case 1:
+
+			System.out.println("La première chaîne est supérieure à la deuxième");
+			break;
+
+		case -1:
+
+			System.out.println("La deuxième chaîne est supérieure à la première");
+			break;
+
+		};
+
+	}
+
+	/**
+	 * Attention pour simplifier l'exercice on ne mettre que de petit nombre
+	 * entier inferieur à 17. Sinon on risque de depasser la limite prévu pour
+	 * le type int. Vous pouvez donc utiliser le type entier int.
+	 */
+	public static void testFactorielItterative() {
+		
+		Scanner input = new Scanner(System.in);
+		System.out.print("Entrez un nombre entier < 17 : ");
+		while(!input.hasNextInt()) {
+			System.out.println("[" + input.next() +  "]" + " n'est pas un entier ou n'est pas un entier < 17  !");
+			System.out.print("Veuillez entrez un nombre entier < 17 : ");
+			input.reset(); 		
+		}
+		int number = Integer.parseInt(input.next());
+		if(number > 17) {
+			System.out.println("Le nombre est >= 17");
+		} else {
+			System.out.println("Factoriel_iterative(" + number + ")  = " + calculation.factorielItterative(number));
+		}
+	}
+
+	/**
+	 * Attention pour simplifier l'exercice on ne mettre que de petit nombre
+	 * entier inferieur à 17. Sinon on risque de depasser la limite prévu pour
+	 * le type int. Vous pouvez donc utiliser le type entier int.
+	 */
+	public static void testFactorielRecursive() {
+
+
+		Scanner input = new Scanner(System.in);
+		System.out.print("Entrez un nombre entier < 17 : ");
+		while(!input.hasNextInt()) {
+			System.out.println("[" + input.next() +  "]" + " n'est pas un entier ou n'est pas un entier < 17  !");
+			System.out.print("Veuillez entrez un nombre entier < 17 : ");
+			input.reset(); 		
+		}
+		int number = Integer.parseInt(input.next());
+		if(number > 16) {
+			System.out.println("Le nombre est >= 17");
+		} else {
+			System.out.println("Factoriel_recursive(" + number + ")  = " + calculation.factorielRecursive(number));
+		}
+	}
+
+
+	public static void testNombreMagique() {
+
+		int [] array = calculation.initMyArray(100);
+		System.out.println("Debut affichage du tableau");
+		calculation.displayArray(array);
+		System.out.println("Le nombre magique est : " + calculation.nombreMagique(array));
+	}
+
+	public static void testSortMyArray() {
+		int [] array = calculation.initMyArray(100);
+		calculation.displayArray(array);
+		System.out.println("Tire du tableau");
+		array = calculation.sortMyArray(array);
+		calculation.displayArray(array);
+
+		
+	}
+
+	public static void testProcessAnimal() {
+		processAnimal.loadAnimalsManually();
+		processAnimal.loadAnimalsFile();
+		processAnimal.calculMoyennePoidsAnimaux();
+		processAnimal.calculEcartTypePoidsAnimaux();
+	}
+}

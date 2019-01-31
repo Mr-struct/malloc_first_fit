@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<list key="org.eclipse.ui.internal.wizards.datatransfer.SmartImportRootWizardPage.knownSources">
+		<item value="/home/mr-struct/Bureau/to delete"/>
+		<item value="/home/mr-struct/git"/>
+		<item value="/home/mr-struct/Téléchargements/maven-design-pattern-dao-observer.zip"/>
+		<item value="/home/mr-struct/Bureau/etna/maven-design-pattern-singleton-factory"/>
+		<item value="/home/mr-struct/Téléchargements/Maven_Hibernate_annotation_MySQL_Example.zip_expanded"/>
+		<item value="/home/mr-struct/Téléchargements/tuto_hibernate.tar.gz"/>
+		<item value="/home/mr-struct/Bureau/SpringHibernateAnnotationExample"/>
+		<item value="/home/mr-struct/Téléchargements/Arkanoid-master"/>
+		<item value="/home/mr-struct/Téléchargements/Arkanoid-master.zip"/>
+	</list>
+	<section name="CleanDialogSettings">
+		<item value="565" key="DIALOG_WIDTH"/>
+		<item value="false" key="TOGGLE_SELECTED"/>
+		<item value="455" key="DIALOG_HEIGHT"/>
+		<item value="679" key="DIALOG_X_ORIGIN"/>
+		<item value="220" key="DIALOG_Y_ORIGIN"/>
+	</section>
+	<section name="ExternalProjectImportWizard">
+		<item value="false" key="WizardProjectsImportPage.STORE_NESTED_PROJECTS"/>
+		<item value="false" key="WizardProjectsImportPage.STORE_COPY_PROJECT_ID"/>
+		<item value="false" key="WizardProjectsImportPage.STORE_ARCHIVE_SELECTED"/>
+		<list key="WizardProjectsImportPage.STORE_DIRECTORIES">
+			<item value="/home/mr-struct/Bureau/poo/belmeh_s/maven-design-pattern-singleton-factory"/>
+		</list>
+		<list key="WizardProjectsImportPage.STORE_ARCHIVES">
+			<item value=""/>
+		</list>
+	</section>
+	<section name="org.eclipse.ui.internal.ide.dialogs.ProjectContentsLocationArea">
+		<item value="/home/mr-struct/git/malloc" key="OUTSIDE_LOCATION"/>
+	</section>
+	<section name="NewWizardAction">
+		<item value="org.eclipse.cdt.ui.wizards.NewCWizard2" key="NewWizardSelectionPage.STORE_SELECTED_ID"/>
+		<list key="NewWizardSelectionPage.STORE_EXPANDED_CATEGORIES_ID">
+			<item value="org.eclipse.cdt.ui.newCWizards"/>
+		</list>
+	</section>
+</section>

@@ -1,0 +1,131 @@
+package com.cours.dao.impl.xml;
+
+import com.cours.dao.IPersonneDao;
+import com.cours.entities.Personne;
+import com.cours.observer.MySubjectObserver;
+import com.cours.singletons.XmlSingleton;
+import com.cours.utils.Constants;
+import java.io.*;
+import java.util.List;
+
+import org.w3c.dom.*;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.*;
+import javax.xml.transform.*;
+import javax.xml.transform.dom.*;
+import javax.xml.transform.stream.*;
+
+public class XmlPersonneDaoImpl /*extends AbstractXmlDao<Personne>*/ implements IPersonneDao {
+
+	private final String personnesXmlPathFile = Constants.PERSONNES_XML_PATH_FILE;
+	private MySubjectObserver subject = null;
+	private boolean sendNotification = true;
+
+	public XmlPersonneDaoImpl() {
+	}
+
+	public XmlPersonneDaoImpl(MySubjectObserver subject) {
+		//super(Personne.class, subject, Constants.PERSONNES_XML_PATH_FILE);
+		this.subject = subject;
+	}
+
+	@Override
+	public List<Personne> findAll() {
+		return XmlSingleton.getXmlSingletonInstance().getPersonnes();
+	}
+
+	@Override
+	public Personne findById(int idPersonne) {
+		List<Personne> personnes = findAll();
+		if(personnes.size() > 0) {
+			for(Personne p : personnes) {
+				if(p.getIdPersonne() == idPersonne) {
+					return p;
+				}
+			}
+		}
+		return null;
+	}
+
+	@Override
+	public Personne create(Personne obj) {
+		 int idPersonne = generateIdNewPersonne();
+			File xmlFile = new File(Constants.PERSONNES_XML_PATH_FILE);
+			
+			DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+			
+			DocumentBuilder documentBuilder = null;
+			try {
+				documentBuilder = documentBuilderFactory.newDocumentBuilder();
+			} catch (ParserConfigurationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			Document document = null;
+			try {
+				document = documentBuilder.parse(xmlFile);
+			} catch (SAXException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			Element documentElement = document.getDocumentElement();
+			Element textNode = document.createElement("prenom");
+			textNode.setTextContent("Michel");
+			Element textNode1 = document.createElement("rue");
+			textNode1.setTextContent("rue de mon cul");
+			Element nodeElement = document.createElement("personne");
+			
+			nodeElement.appendChild(textNode);
+			nodeElement.appendChild(textNode1);
+			documentElement.appendChild(nodeElement);
+			document.replaceChild(documentElement, documentElement);
+			Transformer tFormer = null;
+			try {
+				tFormer = TransformerFactory.newInstance().newTransformer();
+			} catch (TransformerConfigurationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (TransformerFactoryConfigurationError e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			tFormer.setOutputProperty(OutputKeys.METHOD, "xml");
+			Source source = new DOMSource(document);
+			Result result = new StreamResult(xmlFile);
+			try {
+				tFormer.transform(source, result);
+			} catch (TransformerException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+
+		return null;
+	}
+
+	@Override
+	public boolean delete(Personne person) {
+		return true;
+	}
+
+	@Override
+	public int generateIdNewPersonne() {
+		return findAll().size();
+	}
+
+	@Override
+	public boolean sendNotification() {
+		return sendNotification;
+	}
+
+	@Override
+	public void setSendNotification(boolean sendNotification) {
+		this.sendNotification = sendNotification;
+	}
+}

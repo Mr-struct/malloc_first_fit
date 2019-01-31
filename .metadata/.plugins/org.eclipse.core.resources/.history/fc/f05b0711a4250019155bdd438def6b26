@@ -1,0 +1,17 @@
+/*
+** ETNA PROJECT, 31 janv. 2019
+** malloc_header
+** File description
+*/
+
+#ifndef MALLOC_HEADER_H_
+#define MALLOC_HEADER_H_
+typedef struct s_block_meta_data *t_block_meta_data;
+
+struct s_block_meta_data {
+	size_t size;
+	t_block_meta_data next;
+	int free;
+};
+
+#endif /* MALLOC_HEADER_H_ */

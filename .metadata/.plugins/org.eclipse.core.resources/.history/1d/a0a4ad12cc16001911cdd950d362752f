@@ -1,0 +1,240 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.cours.process;
+
+import com.cours.entities.Animal;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.List;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+/**
+ *
+ * @author elhad
+ */
+public class ProcessAnimal implements IProcessAnimal {
+
+	private static final Log log = LogFactory.getLog(ProcessAnimal.class);
+	private List<Animal> animals = null;
+	private final DateFormat dateFormat =  new SimpleDateFormat("dd/MM/yyyy");
+
+	@Override
+	public List<Animal> loadAnimalsManually() {
+		animals = new ArrayList<Animal>();
+		try {
+			animals.add(new Animal(1, "Lion", 200.0,dateFormat.parse("10/10/2000"),"Marron", 4,true));
+			animals.add(new Animal(2, "Elephant", 400.0,dateFormat.parse("10/10/2001"),"Gris", 4,true));
+			animals.add(new Animal(3, "Tigre", 200.0,dateFormat.parse("10/10/2002"),"Orange", 4,true));
+			animals.add(new Animal(4, "Requin", 500.0,dateFormat.parse("10/10/2003"),"Blanc", 4,true));
+			animals.add(new Animal(5, "Chat", 5.0,dateFormat.parse("10/10/2004"),"Noir", 4,true));
+			animals.add(new Animal(6, "Mouton", 50.0,dateFormat.parse("10/10/2005"),"Noir", 4,true));
+			animals.add(new Animal(7, "Chevre", 50.0,dateFormat.parse("10/10/2006"),"Gris", 4,true));
+			animals.add(new Animal(8, "Poule", 3.0,dateFormat.parse("10/10/2007"),"Rousse", 4,true));
+			animals.add(new Animal(9, "Porc", 200.0,dateFormat.parse("10/10/2008"),"Rose", 4,true));
+			animals.add(new Animal(10, "Singe", 80.0,dateFormat.parse("10/10/2009"),"Gris", 4,true));
+			animals.add(new Animal(11, "Giraffe", 300.0,dateFormat.parse("10/10/2010"),"Marron et Noir", 4,true));
+
+
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return animals;
+	}
+
+	@Override
+	public List<Animal> loadAnimalsFile() {
+		File file = new File("animaux.txt");
+		FileReader fileReader  = null;
+		animals = new ArrayList<Animal>();
+		try {
+			fileReader = new FileReader(file.getAbsolutePath());
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		BufferedReader buffer = new BufferedReader(fileReader);
+		String getLines = "";
+		try {
+			while((getLines = buffer.readLine()) != null) {
+
+				String [] strTab = getLines.split(",");
+				Date dateNaissance = dateFormat.parse(dateFormat.format(strTab[3].trim()));
+				animals.add(new Animal(Integer.parseInt(strTab[0].trim()),
+						strTab[1].trim(),
+						Integer.parseInt(strTab[2].trim()),
+						dateNaissance,
+						strTab[4].trim(),
+						Integer.parseInt(strTab[5].trim()),
+						Boolean.parseBoolean(strTab[6].trim())
+						));
+
+			}
+			buffer.close();
+		} catch (IOException | ParseException e ) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+
+		//		for(Animal anim : animals) {
+		//			System.out.println(anim.toString());
+		//		}
+		return animals;
+	}
+
+	@Override
+	public Double calculMoyennePoidsAnimaux() {
+		double total = 0.0;
+		double sommePoid = 0.0;
+		//loadAnimalsFile();
+		for(Animal animal : this.animals) {
+			sommePoid += animal.getPoids();
+		}
+		total = (sommePoid/this.animals.size());
+		System.out.println(total);
+		return total;
+	}
+
+	@Override
+	public Double calculEcartTypePoidsAnimaux() {
+		double sommeCarrePoids = 0.0;
+		double moyennePoids = this.calculMoyennePoidsAnimaux();
+		for(Animal animal : animals) {
+			sommeCarrePoids += animal.getPoids() * animal.getPoids( ) ;
+		}
+		
+		return Math.sqrt((sommeCarrePoids/this.animals.size()) - (moyennePoids*moyennePoids));
+	}
+
+	@Override
+	public List<Animal> sortAnimalsById() {
+		animals.sort(new Comparator<Animal>() {
+
+			@Override
+			public int compare(Animal o1, Animal o2) {
+				// TODO Auto-generated method stub
+				return o1.getIdAnimal().compareTo(o2.getIdAnimal());
+			}
+		});
+		return animals;
+	}
+
+	@Override
+	public List<Animal> sortAnimalsByName() {
+		animals.sort(new Comparator<Animal>() {
+
+			@Override
+			public int compare(Animal o1, Animal o2) {
+				// TODO Auto-generated method stub
+				return o1.getNom().compareTo(o2.getNom());
+			}
+		});
+		return animals;
+	}
+
+	@Override
+	public List<Animal> sortAnimalsByWeight() {
+		animals.sort(new Comparator<Animal>() {
+
+			@Override
+			public int compare(Animal o1, Animal o2) {
+				// TODO Auto-generated method stub
+				Integer poidsA1 = (int)(o1.getPoids());
+				Integer poidsA2 = (int)(o2.getPoids());
+				return poidsA1.compareTo(poidsA2);
+			}
+		});
+		return animals;
+	}
+
+	@Override
+	public List<Animal> sortAnimalsByColor() {
+		animals.sort(new Comparator<Animal>() {
+
+			@Override
+			public int compare(Animal o1, Animal o2) {
+				// TODO Auto-generated method stub
+				return o1.getCouleur().compareTo(o2.getCouleur());
+			}
+		});
+		return animals;
+	}
+
+	@Override
+	public void generateFileByName() {
+		animals = this.loadAnimalsFile();
+		animals = this.sortAnimalsByName();
+		try {
+			BufferedWriter buffer = new BufferedWriter(new FileWriter("animauxParNom.txt"));
+			for(Animal ani: animals) {
+				String line = ani.getIdAnimal() + "," +
+							  ani.getNom() + ", " +
+							  ani.getPoids() + ", " +
+							  ani.getDateNaissance() + ", " +
+							  ani.getCouleur() + ", " +
+							  ani.getNombrePattes() + ", " +
+							  ani.isEstCarnivore();
+				System.out.println("[" + line + "]");
+				buffer.write(line);
+				buffer.newLine();		
+			}
+			
+			//buffer.close(); pas besoin de le fermer en java 7 et +
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+	}
+
+	@Override
+	public void generateFileByWeight() {
+		animals = this.loadAnimalsFile();
+		animals = this.sortAnimalsByWeight();
+		try {
+			BufferedWriter buffer = new BufferedWriter(new FileWriter("animauxParNom.txt"));
+			for(Animal ani: animals) {
+				String line = ani.getIdAnimal() + "," +
+							  ani.getNom() + ", " +
+							  ani.getPoids() + ", " +
+							  ani.getDateNaissance() + ", " +
+							  ani.getCouleur() + ", " +
+							  ani.getNombrePattes() + ", " +
+							  ani.isEstCarnivore();
+				System.out.println("[" + line + "]");
+				buffer.write(line);
+				buffer.newLine();		
+			}
+			
+			//buffer.close(); pas besoin de le fermer en java 7 et +
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public List<Animal> getAnimals() {
+		return animals;
+	}
+}

@@ -1,0 +1,3 @@
+toString : La methode toString sert à avoire une representation textuel de l'objet, comme une description de l'objet, affiche le contenut de ces attributs. 
+equals :   La methode equals permet de comparer deux instance d'objet si il sont egale en terme de type d'objet puis du contenu. 
+hashCode : La methode hasCode fournit un identifiant unique pour chaque objet ce qui améliorer l'alogrithme de la comparaison (equals) en comparant juste les valeurs de hash au lieu de toute l'instance

@@ -1,0 +1,244 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.cours.entities;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+/**
+ *
+ * @author elhad
+ */
+public class Animal {
+	/**
+	 * Attribus
+	 */
+	private Integer idAnimal;
+	private String nom;
+	private double poids;
+	private java.util.Date dateNaissance;
+	private String couleur;
+	private int nombrePattes;
+	private boolean estCarnivore;
+	
+	/**
+	 * Constructeur 
+	 * @param idAnimal
+	 * @param nom
+	 * @param poids
+	 * @param dateNaissance
+	 * @param couleur
+	 * @param nombrePattes
+	 * @param estCarnivore
+	 */
+	public Animal(Integer idAnimal, String nom, double poids, Date dateNaissance, String couleur, int nombrePattes,
+			boolean estCarnivore) {
+		this.idAnimal = idAnimal;
+		this.nom = nom;
+		this.poids = poids;
+		this.dateNaissance = dateNaissance;
+		this.couleur = couleur;
+		this.nombrePattes = nombrePattes;
+		this.estCarnivore = estCarnivore;
+	}
+	/**
+	 * 
+	 * @return idAnimal
+	 */
+	public Integer getIdAnimal() {
+		return idAnimal;
+	}
+	
+	/**
+	 * 
+	 * @param idAnimal
+	 */
+	public void setIdAnimal(Integer idAnimal) {
+		this.idAnimal = idAnimal;
+	}
+	
+	
+	/**
+	 * 
+	 * @return nom
+	 */
+	public String getNom() {
+		return nom;
+	}
+	
+	/**
+	 * 
+	 * @param nom
+	 */
+	public void setNom(String nom) {
+		this.nom = nom;
+	}
+	
+	/**
+	 * 
+	 * @return poids
+	 */
+	public double getPoids() {
+		return poids;
+	}
+	
+	/**
+	 * 
+	 * @param poids
+	 */
+	public void setPoids(double poids) {
+		this.poids = poids;
+	}
+	
+	/**
+	 * 
+	 * @return dateNaissance
+	 */
+	public java.util.Date getDateNaissance() {
+		return dateNaissance;
+	}
+	
+	/**
+	 * 
+	 * @param dateNaissance
+	 */
+	public void setDateNaissance(java.util.Date dateNaissance) {
+		this.dateNaissance = dateNaissance;
+	}
+	
+	/**
+	 * 
+	 * @return couleur
+	 */
+	public String getCouleur() {
+		return couleur;
+	}
+	
+	/**
+	 * 
+	 * @param couleur
+	 */
+	public void setCouleur(String couleur) {
+		this.couleur = couleur;
+	}
+	
+	/**
+	 * 
+	 * @return nombrePattes
+	 */
+	public int getNombrePattes() {
+		return nombrePattes;
+	}
+	
+	/**
+	 * 
+	 * @param nombrePattes
+	 */
+	public void setNombrePattes(int nombrePattes) {
+		this.nombrePattes = nombrePattes;
+	}
+	
+	/**
+	 * 
+	 * @return estCarnivore
+	 */
+	public boolean isEstCarnivore() {
+		return estCarnivore;
+	}
+	
+	/**
+	 * 
+	 * @param estCarnivore
+	 */
+	public void setEstCarnivore(boolean estCarnivore) {
+		this.estCarnivore = estCarnivore;
+	}
+
+	/**
+	 *  Affiche le nombre de pattes de l'animal
+	 */
+	public void marche() {
+		System.out.println("L'animal "+ nom +" marche avec " + nombrePattes + " pattes");
+	}
+	
+	/**
+	 * decrit l'animal
+	 */
+	public void description() {
+		String regimeAlimentaire = "n'est pas carnivore";
+		
+		if(this.estCarnivore) {
+			regimeAlimentaire = "est carnivore";
+		}
+		
+		System.out.println("L'animal " + nom + " est née le " + dateNaissance + 
+							", il pèse " + poids + " ,il est de couleur " + couleur + 
+							", il a " + nombrePattes + " pattes, il " + regimeAlimentaire);
+	}
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((couleur == null) ? 0 : couleur.hashCode());
+		result = prime * result + ((dateNaissance == null) ? 0 : dateNaissance.hashCode());
+		result = prime * result + (estCarnivore ? 1231 : 1237);
+		result = prime * result + ((idAnimal == null) ? 0 : idAnimal.hashCode());
+		result = prime * result + ((nom == null) ? 0 : nom.hashCode());
+		result = prime * result + nombrePattes;
+		long temp;
+		temp = Double.doubleToLongBits(poids);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Animal other = (Animal) obj;
+		if (couleur == null) {
+			if (other.couleur != null)
+				return false;
+		} else if (!couleur.equals(other.couleur))
+			return false;
+		if (dateNaissance == null) {
+			if (other.dateNaissance != null)
+				return false;
+		} else if (!dateNaissance.equals(other.dateNaissance))
+			return false;
+		if (estCarnivore != other.estCarnivore)
+			return false;
+		if (idAnimal == null) {
+			if (other.idAnimal != null)
+				return false;
+		} else if (!idAnimal.equals(other.idAnimal))
+			return false;
+		if (nom == null) {
+			if (other.nom != null)
+				return false;
+		} else if (!nom.equals(other.nom))
+			return false;
+		if (nombrePattes != other.nombrePattes)
+			return false;
+		if (Double.doubleToLongBits(poids) != Double.doubleToLongBits(other.poids))
+			return false;
+		return true;
+	}
+	
+	@Override
+	public String toString() {
+		SimpleDateFormat simpleDateF = new SimpleDateFormat("dd/MM/yyy");
+		return "Animal [idAnimal=" + idAnimal + ", nom=" + nom + ", poids=" + poids + ", dateNaissance=" + simpleDateF.format(dateNaissance)
+				+ ", couleur=" + couleur + ", nombrePattes=" + nombrePattes + ", estCarnivore=" + estCarnivore + "]";
+	}
+
+}
