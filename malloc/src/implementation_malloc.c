@@ -53,18 +53,18 @@ t_block heap_extention(t_block last_block, size_t size_to_expend)
 
 /**
  * Split a block of memorie block_to_split
- * to the size of the geven parameter size_of_new_lock
+ * to the size of the geven parameter size_of_new_block
  * @param block_to_split
  * @param size_of_new_lock
  */
-void split_block(t_block block_to_split, size_t size_of_new_lock)
+void split_block(t_block block_to_split, size_t size_of_new_block)
 {
 	t_block new_block = NULL;
-	new_block = (t_block)(block_to_split->data + size_of_new_lock);
-	new_block->size = block_to_split->size - size_of_new_lock - BLOCK_SIZE;
+	new_block = (t_block)(block_to_split->data + size_of_new_block);
+	new_block->size = block_to_split->size - size_of_new_block - BLOCK_SIZE;
 	new_block->next = block_to_split->next;
 	new_block->free = 1;
-	block_to_split->size = size_of_new_lock;
+	block_to_split->size = size_of_new_block;
 	block_to_split->next = new_block;
 }
 
