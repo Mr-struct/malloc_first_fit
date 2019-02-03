@@ -78,7 +78,7 @@ void *my_malloc(size_t size)
 	t_block last = NULL;
 	size_t s;
 	s = align4(size);
-	if (base) {
+	if (base == NULL) {
 		/* First find a block */
 		last = base;
 		new_block = get_first_fit_block_algo(&last, s);
