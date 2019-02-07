@@ -4,7 +4,8 @@ NAME = libmy_malloc_$(shell uname).so
 RM = rm -f
 FILE = libmy_malloc.so
 LINK = ln -s $(NAME) libmy_malloc.so
-SRC= implementation_malloc.c
+SRC= malloc.c\
+	 free.c
 
 OBJ = $(SRC:.c=.o)
 
