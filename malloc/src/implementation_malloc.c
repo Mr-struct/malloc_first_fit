@@ -32,9 +32,6 @@ t_block get_best_fit_block_algo(t_block *last, size_t size)
 
 /**
  * rise the size of the heap
- * @param last_block
- * @param size_to_expend
- * @return
  */
 t_block heap_lenght_plus_plus(t_block last_block, size_t size)
 {
@@ -101,7 +98,6 @@ void *malloc(size_t size)
 	size_t size_aligned;
 	size_aligned = align4(size);
 	if (base) {
-		/* First find a block */
 		last = base;
 		new_block = get_best_fit_block_algo(&last, size_aligned);
 		new_block = divid_or_expen(new_block, last, size_aligned);
@@ -114,4 +110,86 @@ void *malloc(size_t size)
 		base = new_block;
 	}
 	return (new_block->data);
+}
+
+/**
+ * fusoin the current block with the next block
+ */
+t_block fusion_with(t_block block)
+{
+	if (block->next_block && block->next_block->is_free) {
+		block->size += BLOCK_SIZE + block->next_block->size;
+		block->next_block = block->next_block->next_block;
+		if (block->next_block)
+			block->next_block->previous_block = block;
+	}
+	return (block);
+}
+
+/**
+ *  Get block from and addr
+ */
+t_block get_block_from_addr(void *addr)
+{
+	char *temp = NULL;
+	temp = addr;
+	temp -= BLOCK_SIZE;
+	addr = temp;
+	return (addr);
+}
+
+/**
+ *  test if the given adress is an old malloced address
+ */
+int is_malloced_addr(void *addr)
+{
+	if (base) {
+		/*
+		 * test if the addres is in the range between the first block
+		 * and the last
+		 */
+		if (addr > base && addr < sbrk(0)) {
+			return (addr == (get_block_from_addr(addr))->ptr);
+		}
+	}
+	return (0);
+}
+
+/**
+ * free implementation
+ */
+void free(void *addr)
+{
+	t_block block_to_free = NULL;
+
+	if (is_malloced_addr(addr)) {
+		block_to_free = get_block_from_addr(addr);
+		block_to_free->is_free = 1;
+		/*
+		 * fusion the actual block withe his prev
+		 */
+		if (block_to_free->previous_block
+				&& block_to_free->previous_block->is_free) {
+			block_to_free = fusion_with(
+					block_to_free->previous_block);
+		}
+		/*
+		 *fusion the actual block with his next
+		 */
+		if (block_to_free->next_block) {
+			fusion_with(block_to_free);
+		}
+		else {
+			/*
+			 * free the end of the heap
+			 */
+			if (block_to_free->previous_block) {
+				block_to_free->previous_block->next_block =
+				NULL;
+			}
+			else {
+				base = NULL;
+			}
+		}
+	}
 }
