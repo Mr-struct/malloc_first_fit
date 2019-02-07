@@ -6,7 +6,6 @@
 #include <sys/types.h>
 #include <unistd.h>
 #include "malloc_header.h"
-#include <stdio.h>
 void *base = NULL;
 
 /**
@@ -95,7 +94,7 @@ t_block divid_or_expen(t_block new_block, t_block last, size_t size_aligned)
  * malloc implementation
  * @param size
  */
-void *my_malloc(size_t size)
+void *malloc(size_t size)
 {
 	t_block new_block = NULL;
 	t_block last = NULL;
@@ -116,84 +115,3 @@ void *my_malloc(size_t size)
 	}
 	return (new_block->data);
 }
-
-t_block fusion_with(t_block block)
-{
-	if (block->next_block && block->next_block->is_free) {
-		block->size += BLOCK_SIZE + block->next_block->size;
-		block->next_block = block->next_block->next_block;
-		if (block->next_block)
-			block->next_block->previous_block = block;
-	}
-	return (block);
-}
-
-/* Get the block from and addr */
-t_block get_block_from_addr(void *addr)
-{
-	char *tmp;
-	tmp = addr;
-	return (addr = tmp -= BLOCK_SIZE);
-}
-
-/* Valid addr for free */
-int is_malloced_addr(void *addr)
-{
-	if (base) {
-		if (addr > base && addr < sbrk(0)) {
-			return (addr == (get_block_from_addr(addr))->ptr);
-		}
-	}
-	return (0);
-}
-
-/* The free */
-/* See free(3) */
-void my_free(void *addr)
-{
-	t_block block_to_free = NULL;
-
-	if (is_malloced_addr(addr)) {
-		block_to_free = get_block_from_addr(addr);
-		block_to_free->is_free = 1;
-		/* fusion with previous if possible */
-		if (block_to_free->previous_block
-				&& block_to_free->previous_block->is_free) {
-			block_to_free = fusion_with(
-					block_to_free->previous_block);
-		}
-		/* then fusion with next */
-		if (block_to_free->next_block) {
-			fusion_with(block_to_free);
-		}
-		else {
-			/* free the end of the heap */
-			if (block_to_free->previous_block) {
-				block_to_free->previous_block->next_block =
-						NULL;
-			}
-			else {
-				base = NULL;
-			}
-
-			brk(block_to_free);
-		}
-	}
-}
-
-int main(int argc, char **argv)
-{
-	int *out = my_malloc(sizeof(int) * 100);
-	for (int i = 0; i < 100; i++) {
-		out[i] = i;
-		int k = out[i];
-		printf("k = %d \n", k);
-	}
-	my_free(out);
-	for (int i = 0; i < 100; i++) {
-		int m = out[i];
-		printf("free = %d \n", m);
-	}
-	return 0;
-}
-
